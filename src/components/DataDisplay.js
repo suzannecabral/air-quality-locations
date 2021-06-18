@@ -16,7 +16,6 @@ const DataDisplay =(props)=> {
     return(
         <div className='data-display'>
             <div className='data-description'>
-                <p>The Data Display component lives here</p>
             </div>
             <div className="data-list">
                 {

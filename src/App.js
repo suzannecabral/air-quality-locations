@@ -30,12 +30,16 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Air Quality</h1>
-      <p>Description/intro will go here</p>
-      {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
-      <DataDisplay
-        communityData={communityData}
-      ></DataDisplay>
+      <div className="app-content">
+        <header>
+          <h1>Air Quality</h1>
+        </header>
+        <p>Description/intro will go here</p>
+        {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
+        <DataDisplay
+          communityData={communityData}
+        ></DataDisplay>
+      </div>
     </div>
   );
 }
