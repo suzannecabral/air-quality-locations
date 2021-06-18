@@ -6,27 +6,30 @@ import DataDisplay from './components/DataDisplay';
 import UserForm from './components/UserForm';
 
 function App() {
-
-  let urlParams = '?entity=community&country=US&has_geo=true&coordinates=37.9952,-122.0406&radius=5000';
-
-  // use json to lookup coords for user input zip code
+  // url format: 
   // query coordinates are gps latitude, longitude
+  // radius is in meters
+  // &coordinates=37.5341,-122.2473&radius=8047
+  const defaultQueryValues={
+    "lat":37.5341,
+    "long":-122.2473,
+    "radius":1610
+  };
+  
+  // queryValues is an object with correctly formatted params ready for URl
+  // queryUrl is used directly
+  const baseUrl='https://docs.openaq.org/v2/locations?entity=community&country=US&has_geo=true';
+  const defaultUrl=baseUrl + '&coordinates=' + defaultQueryValues.lat + ',' + defaultQueryValues.long + '&radius=' + defaultQueryValues.radius;
 
-  // query uses meters for radius distance
-  // miles to meters: 1:1609.34
-  const milesToMeters = (miles) => {
-    const meters = miles * 1609.34;
-    return (Math.ceil(meters));
-  }
-
+  const [queryValues, setQueryValues] = useState(defaultQueryValues);
+  const [queryUrl, setQueryUrl] = useState(defaultUrl);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [apiUrl, setApiUrl] = useState('https://docs.openaq.org/v2/locations');
   const [communityData, setCommunityData] = useState([]);
 
   useEffect(()=>{
 
-    axios.get(apiUrl + urlParams)
+    axios.get(queryUrl)
     .then((res)=>{
       // res.data.results sends an array of community objects
       // individual readings are nested in object.parameters
@@ -52,8 +55,8 @@ function App() {
           {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
         </div>
         <UserForm
-          apiUrl={apiUrl}
-          setApiUrl={setApiUrl}
+          queryValues={queryValues}
+          setQueryValues={setQueryValues}
         ></UserForm>
         <DataDisplay
           communityData={communityData}

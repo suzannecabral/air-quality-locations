@@ -3,12 +3,25 @@ import { useEffect, useState } from 'react';
 import zipObjs from '../zip-lat-long.json';
 
 const UserForm = (props) => {
-    const { apiUrl, setApiUrl } = props;
+    const { queryValues, setQueryValues } = props;
 
     const defaultFormValues={
         "radius":0,
         "zipcode":''
+    };
+    // url format: 
+    // &coordinates=37.5341,-122.2473&radius=8047
+
+    // query uses meters for radius distance
+    // miles to meters: 1:1609.34
+    const milesToMeters = (miles) => {
+        const meters = miles * 1609.34;
+        return (Math.ceil(meters));
     }
+    
+    // use json to lookup coords for user input zip code
+    
+
     const [ formValues, setFormValues ] = useState(defaultFormValues);
     const [ errorMsg, setErrorMsg ] = useState('');
 
@@ -21,6 +34,8 @@ const UserForm = (props) => {
         let searchZip = 0;
         if (userZip[0] != '0'){
             // If zip starts dosen't start with 0, convert to num
+            // zips that start with 0 are formatted as strings in search list
+            // the rest are numbers
             searchZip = Number(userZip);
         }else{
             searchZip = userZip;
@@ -71,6 +86,7 @@ const UserForm = (props) => {
                         // value={formValues.radius}
                         onChange={onChange}
                     >
+                        <option value="1">1 mi</option>
                         <option value="5">5 mi</option>
                         <option value="10">10 mi</option>
                         <option value="15">15 mi</option>
