@@ -7,8 +7,7 @@ const DataDisplay =(props)=> {
     return(
         <div className='data-display'>
             <p>The Data Display component lives here</p>
-            <p role="alert">This is an error message</p>
-            <p>This is some text about the data</p>
+            <p role="alert" className="error">This is an error message</p>
         </div>
     );
 }

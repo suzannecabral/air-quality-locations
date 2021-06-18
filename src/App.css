@@ -1,3 +1,13 @@
 .app{
   color:#2e2e2e;
 }
+
+.error{
+  color:#ff4c4a;
+  font-style:italic;
+  font-size:.9rem;
+}
+
+.data-list{
+  margin:0;
+}
