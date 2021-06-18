@@ -8,6 +8,6 @@
   font-size:.9rem;
 }
 
-.data-list{
+.data-list > * {
   margin:0;
 }
