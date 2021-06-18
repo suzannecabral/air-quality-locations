@@ -10,7 +10,6 @@ function App() {
 
   let [apiData, setApiData] = useState({});
 
-
   useEffect(()=>{
 
     axios.get(apiUrl + urlParams)
@@ -23,15 +22,11 @@ function App() {
       // setApiData(res.data.results);
       // console.log(apiData);
     
-
     })
     .catch((err)=>{
       console.error(err)
     });
-
     console.log('Api url: ', apiUrl + urlParams);
-
-
   },[apiUrl,urlParams])
 
   return (
