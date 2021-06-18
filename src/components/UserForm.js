@@ -5,11 +5,14 @@ import zipObjs from '../zip-lat-long.json';
 const UserForm = (props) => {
     const { apiUrl, setApiUrl } = props;
 
-    const [ formData, setFormData ] = useState({
+    const defaultFormValues={
         "radius":0,
         "zipcode":''
-    });
+    }
+    const [ formValues, setFormValues ] = useState(defaultFormValues);
+    const [ errorMsg, setErrorMsg ] = useState('');
 
+    // create an array of valid US zipcodes
     const zipList = zipObjs.map((obj)=>{
         return obj.ZIP;
     });
@@ -24,29 +27,59 @@ const UserForm = (props) => {
         }
         // search for zip in list
         // returns true if found
-        return zipList.includes(searchZip)
+        if(zipList.includes(searchZip)){
+            setErrorMsg('');
+            console.log('Valid zip code: ', searchZip);
+            return true;
+        }else{
+            setErrorMsg('Invalid Zip Code');
+            console.log('Invalid zip code: ', searchZip);
+            return false;
+        }
+    }
+
+    const onChange = (e)=>{
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    }
+
+    const onSubmit = (e)=>{
+        e.preventDefault();
+        console.log('Search form submitted');
+        validateZip(formValues.zipcode);
     }
 
     useEffect(()=>{
-        console.log(validateZip('94520'));
     },[zipList]);
 
     return(
         <div className="user-form">
             <p>Select a location to view air quality measurements:</p>
-            <form>
+            <form onSubmit={onSubmit}>
                 <label>Zip Code:
-                    <input type="text" placeholder="Zip Code" />
+                    <input 
+                        type="text" 
+                        placeholder="Zip Code"
+                        name="zipcode"
+                        onChange={onChange}
+                    />
+                    
                 </label>
                 <label>Radius:
-                    <select>
-                        <option>5 mi</option>
-                        <option>10 mi</option>
-                        <option>15 mi</option>
-                        <option>20 mi</option>
-                        <option>30 mi</option>
+                    <select
+                        name="radius"
+                        // value={formValues.radius}
+                        onChange={onChange}
+                    >
+                        <option value="5">5 mi</option>
+                        <option value="10">10 mi</option>
+                        <option value="15">15 mi</option>
+                        <option value="20">20 mi</option>
+                        <option value="30">30 mi</option>
                     </select>
                 </label>
+                <button type="submit">Search</button>
+                <p className="error">&nbsp;{errorMsg}</p>
             </form>
         </div>
     );

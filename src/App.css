@@ -52,9 +52,14 @@ h1{
   padding: 0 0 1rem 2rem;
 }
 .user-form input, .user-form select {
-  margin:0 1.5rem 0 .25rem;
+  margin-left: .25rem;
+  /* margin:0 1.5rem 0 .25rem; */
   /* margin:0; */
   /* border:2px solid red; */
+}
+.user-form .error{
+  margin:0 0 .5rem 0;
+  /* float:left; */
 }
 .error{
   color:#ff4c4a;
