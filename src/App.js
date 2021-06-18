@@ -1,7 +1,9 @@
 import './App.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+
 import DataDisplay from './components/DataDisplay';
+import UserForm from './components/UserForm';
 
 function App() {
 
@@ -49,6 +51,10 @@ function App() {
           <p className="description">Local air quality data powered by OpenAQ API</p>
           {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
         </div>
+        <UserForm
+          apiUrl={apiUrl}
+          setApiUrl={setApiUrl}
+        ></UserForm>
         <DataDisplay
           communityData={communityData}
         ></DataDisplay>
