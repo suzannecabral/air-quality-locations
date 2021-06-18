@@ -5,12 +5,25 @@ import DataDisplay from './components/DataDisplay';
 
 function App() {
 
-  let apiUrl = 'https://docs.openaq.org/v2/locations'
-  let urlParams = '?entity=community&country=US&order_by=city';
+  let urlParams = '?entity=community&country=US&has_geo=true&coordinates=37.9952,-122.0406&radius=3000';
 
-  let [error, setError] = useState(false);
-  let [errorMsg, setErrorMsg] = useState('');
-  let [communityData, setCommunityData] = useState([]);
+  // test data: REMOVE WHEN DONE
+  // 5mi ~ 8047m
+  // Los Altos Ave: 37.402,-122.1187
+  // 94520: 37.995285,-122.040627
+
+  // api query reads meters for radius distance
+  // miles to meters: 1:1609.34
+
+  const milesToMeters = (miles) => {
+    const meters = miles * 1609.34;
+    return (Math.ceil(meters));
+  }
+
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [apiUrl, setApiUrl] = useState('https://docs.openaq.org/v2/locations');
+  const [communityData, setCommunityData] = useState([]);
 
   useEffect(()=>{
 
@@ -19,6 +32,7 @@ function App() {
       // res.data.results sends an array of community objects
       // individual readings are nested in object.parameters
       setCommunityData([...res.data.results]);
+      console.log('Res object: ', res);
       console.log('App State data:', communityData);
     })
     .catch((err)=>{
