@@ -1,3 +1,74 @@
+/* color key */
+/* material design */
+/* light blue #2 */
+
+/* key #b3e5fc */
+/* light #e6ffff */
+/* dark #82b3c9 */
+
+/* text accents */
+/* blue: #0093c4 */
+/* red: #ff4c4a */
+/* green: #34c95c */
+
+/* Grays: */
+/* mid-bg:#E1E2E1; */
+/* light-bg:#f5f5f6; */
+
+header {
+  background-color:#b3e5fc;
+  border-top:18px solid #82b3c9;
+  padding-bottom:.1rem;
+}
+h1{
+  font-weight:normal;
+}
 .app{
   color:#2e2e2e;
+}
+.app-top{
+  -webkit-box-shadow: 0px 0px 4px 4px #E1E2E1; 
+  box-shadow: 0px 0px 4px 4px #ededed;
+  height:19vh;
+}
+.app-top > *{
+  padding:0 0 0 2rem;
+}
+.app-top > header, .app-top > p.description{
+  padding-bottom:.1rem;
+}
+
+.app-content{
+  background-color:#f5f5f6;
+  /* padding:0 0 0 2rem; */
+}
+.data-display{
+  position:absolute;
+  padding: 0 0 2rem 2rem;
+  overflow-y:scroll;
+  height:80vh;
+  width:96.4%;
+}
+.error{
+  color:#ff4c4a;
+  font-style:italic;
+  font-size:.9rem;
+}
+
+.community{
+  margin-top:1.5rem;
+}
+.community p{
+  margin:0;
+  font-size:.8rem;
+}
+.community-name{
+  font-weight:bold;
+  font-size:.9rem;
+}
+.micrograms{
+  color:#0093c4;
+}
+.targetAQ{
+  color:#34c95c;
 }

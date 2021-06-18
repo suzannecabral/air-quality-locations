@@ -1,7 +1,9 @@
 # Air Quality Locations
 
 Data visualization of local air quality powered by OpenAQ's API
+
 [OpenAQ Home](https://openaq.org/#/)
+
 [OpenAQ Api Docs](https://docs.openaq.org/#/v2/summary_get_v2_summary_get)
 
 ## Goals
