@@ -5,16 +5,13 @@ import DataDisplay from './components/DataDisplay';
 
 function App() {
 
-  let urlParams = '?entity=community&country=US&has_geo=true&coordinates=37.9952,-122.0406&radius=3000';
+  let urlParams = '?entity=community&country=US&has_geo=true&coordinates=37.9952,-122.0406&radius=5000';
 
-  // test data: REMOVE WHEN DONE
-  // 5mi ~ 8047m
-  // Los Altos Ave: 37.402,-122.1187
-  // 94520: 37.995285,-122.040627
+  // use json to lookup coords for user input zip code
+  // query coordinates are gps latitude, longitude
 
-  // api query reads meters for radius distance
+  // query uses meters for radius distance
   // miles to meters: 1:1609.34
-
   const milesToMeters = (miles) => {
     const meters = miles * 1609.34;
     return (Math.ceil(meters));

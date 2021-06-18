@@ -10,6 +10,8 @@ const DataDisplay =(props)=> {
 
     const [displayData, setDisplayData] = useState([]);
 
+    const goalAQ = 5;
+
     const filterForDisplay = (arr) => {
         // create a copy of api data to transform
         const copiedArr = JSON.parse(JSON.stringify(arr));
@@ -27,7 +29,8 @@ const DataDisplay =(props)=> {
                 unit: µg/m³
                 displayName: PM10
                 id: 420988
-            }
+            },
+            meetsGoalAQ: true
         }*/
         const findMaxParam = (arr) => {
             return arr.reduce((acc,cur)=>{
@@ -37,8 +40,10 @@ const DataDisplay =(props)=> {
                 return acc;
             })
         }
+
         const newArr = copiedArr.map((comm)=>{
             let maxParam = findMaxParam(comm.parameters);
+
             return(
                 { 
                     "communityName": comm.name,
@@ -50,14 +55,12 @@ const DataDisplay =(props)=> {
                         "id": 420988
                     }*/
                     "maxParam": maxParam,
+                    meetsGoalAQ: maxParam.average < goalAQ
                 }
             )
         });
         return newArr;
     }
-
-    // var maxB = a.sort((a,b)=>b.y-a.y)[0].y;   
-
 
     useEffect(()=>{
         // transform community data before setting to display
@@ -76,7 +79,7 @@ const DataDisplay =(props)=> {
                     return (
                     <div key={'comm'+idx} className='community'>
                         <p className="community-name">{obj.communityName}</p>
-                        <p className={obj.maxParam.average >= 5 ? 'red' : 'green' }>{obj.maxParam.average + ' ' + obj.maxParam.unit + ' ' + obj.maxParam.displayName}</p>
+                        <p className={obj.meetsGoalAQ ? 'green' : 'red' }>{obj.maxParam.average + ' ' + obj.maxParam.unit + ' ' + obj.maxParam.displayName}</p>
                     </div>
                     )
                     })
