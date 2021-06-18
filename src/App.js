@@ -1,6 +1,7 @@
 import './App.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import DataDisplay from './components/DataDisplay';
 
 function App() {
 
@@ -36,7 +37,10 @@ function App() {
   return (
     <div className="app">
       <h1>Air Quality</h1>
-      <p>App data will go here</p>
+      <p>Description/intro will go here</p>
+      <DataDisplay
+        data={apiData}
+      ></DataDisplay>
     </div>
   );
 }
