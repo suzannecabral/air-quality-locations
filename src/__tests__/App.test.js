@@ -6,3 +6,8 @@ test('renders title: Air Quality', () => {
   const Title = screen.getByText(/Air Quality/i);
   expect(Title).toBeInTheDocument();
 });
+
+// prints api location list to text in the app
+// shows number of relevant measurements per location
+// shows number of measurements above threshold per location
+// shows an indicator that location meets air quality standard (star and green text)
