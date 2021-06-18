@@ -11,24 +11,57 @@ const DataDisplay =(props)=> {
     const [displayData, setDisplayData] = useState([]);
 
     const filterForDisplay = (arr) => {
-        // must have at least 1 measurement using micrograms/m3
+        // create a copy of api data to transform
+        const copiedArr = JSON.parse(JSON.stringify(arr));
 
-        // add keys: maxParamAvg | maxParamUnit | maxParamType | maxParamId
-        // take max measurement average: record measurement, unit and type
-        // maxParamId is the id of the measurement object, not the server's "parameterId"
+        // filter:
+        // must have at least 1 measurement (ceil) > 0.000 using micrograms/m3
+
+        // reduce:
+        // keep data for highest measurement (by parameter.average)
         /*{
             communityName: Smallville
-            communityId: 1234
-            maxParamAvg: 0.065
-            maxMaramUnit: µg/m³
-            maxParamType: PM2.5
-            maxParamId: 5678
+            communityId: 71900
+            maxParam:{
+                average: 2.57801003344482
+                unit: µg/m³
+                displayName: PM10
+                id: 420988
+            }
         }*/
+        const findMaxParam = (arr) => {
+            return arr.reduce((acc,cur)=>{
+                if (cur.average > acc.average){
+                    acc = cur
+                };
+                return acc;
+            })
+        }
+        const newArr = copiedArr.map((comm)=>{
+            let maxParam = findMaxParam(comm.parameters);
+            return(
+                { 
+                    "communityName": comm.name,
+                    "communityId": comm.id,
+                    /*"maxParam":{
+                        "average": 2.57801003344482,
+                        "unit": "µg/m³",
+                        "type": "PM10",
+                        "id": 420988
+                    }*/
+                    "maxParam": maxParam,
+                }
+            )
+        });
+        return newArr;
     }
+
+    // var maxB = a.sort((a,b)=>b.y-a.y)[0].y;   
+
 
     useEffect(()=>{
         // transform community data before setting to display
-        setDisplayData([...communityData]);
+        setDisplayData(filterForDisplay(communityData));
         console.log("Display Data: ", displayData);
     },[props]);
 
@@ -37,18 +70,16 @@ const DataDisplay =(props)=> {
             <div className='data-description'>
             </div>
             <div className="data-list">
+                
                 {
-                    
-
-                    // communityData.map((obj, idx)=>{
-                    // return (<div key={'obj'+idx} className='community'><p className="community-name">{obj.name}</p>  
-                    //     {
-                    //         obj.parameters.map((param,idx)=>{
-                    //             return(<p key={'param'+idx}  className={param.unit === "µg/m³" && param.average > 0 && param.average < 5 ? 'targetAQ' : ''}> { (Math.ceil(param.average * 1000)/1000).toFixed(3)+ ' ' + param.unit + ' ' + param.parameter}</p>);
-                    //         })
-                    //     }
-                    // </div>)
-                    // })
+                    displayData.map((obj, idx)=>{
+                    return (
+                    <div key={'comm'+idx} className='community'>
+                        <p className="community-name">{obj.communityName}</p>
+                        <p className={obj.maxParam.average >= 5 ? 'red' : 'green' }>{obj.maxParam.average + ' ' + obj.maxParam.unit + ' ' + obj.maxParam.displayName}</p>
+                    </div>
+                    )
+                    })
                 }
             </div>
         </div>
