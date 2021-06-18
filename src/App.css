@@ -8,6 +8,12 @@
   font-size:.9rem;
 }
 
-.data-list > * {
+.community{
+  margin-top:2.5rem;
+}
+.community p{
   margin:0;
+}
+.community-name{
+  font-weight:bold;
 }

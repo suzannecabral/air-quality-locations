@@ -8,33 +8,33 @@ function App() {
   let apiUrl = 'https://docs.openaq.org/v2/locations'
   let urlParams = '?entity=community&country=US&order_by=city';
 
-  let [apiData, setApiData] = useState({});
+  let [error, setError] = useState(false);
+  let [errorMsg, setErrorMsg] = useState('');
+  let [communityData, setCommunityData] = useState([]);
 
   useEffect(()=>{
 
     axios.get(apiUrl + urlParams)
     .then((res)=>{
-      // if searching by community
-      // res.data.results sends an array of objects
-      // individual readings are nested in community object
-
-      console.log(res.data.results);
-      // setApiData(res.data.results);
-      // console.log(apiData);
-    
+      // res.data.results sends an array of community objects
+      // individual readings are nested in object.parameters
+      setCommunityData([...res.data.results]);
+      console.log('App State data:', communityData);
     })
     .catch((err)=>{
-      console.error(err)
+      setError(true);
+      setErrorMsg(err);
+      console.error(err);
     });
-    console.log('Api url: ', apiUrl + urlParams);
-  },[apiUrl,urlParams])
+  },[])
 
   return (
     <div className="app">
       <h1>Air Quality</h1>
       <p>Description/intro will go here</p>
+      {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
       <DataDisplay
-        data={apiData}
+        communityData={communityData}
       ></DataDisplay>
     </div>
   );
