@@ -31,11 +31,13 @@ function App() {
   return (
     <div className="app">
       <div className="app-content">
-        <header>
-          <h1>Air Quality</h1>
-        </header>
-        <p>Description/intro will go here</p>
-        {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
+        <div className="app-top">
+          <header>
+            <h1>Air Quality</h1>
+          </header>
+          <p className="description">Local air quality data powered by OpenAQ API</p>
+          {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
+        </div>
         <DataDisplay
           communityData={communityData}
         ></DataDisplay>

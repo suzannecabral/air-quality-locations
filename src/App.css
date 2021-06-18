@@ -13,32 +13,35 @@
 header {
   background-color:#b3e5fc;
   border-top:18px solid #82b3c9;
-  height:100%;
-  width:100%;
   padding-bottom:.1rem;
 }
-
 h1{
   font-weight:normal;
 }
-
 .app{
   color:#2e2e2e;
-  height:100%;
-  width:100%;
 }
-.app-content{
-  /* background-color:#E1E2E1; */
-  background-color:#f5f5f6;
+.app-top{
+  -webkit-box-shadow: 0px 0px 4px 4px #E1E2E1; 
+  box-shadow: 0px 0px 4px 4px #ededed;
+  height:19vh;
 }
-.app-content > *{
-  padding-left:2.5rem;
+.app-top > *{
+  padding:0 0 0 2rem;
+}
+.app-top > header, .app-top > p.description{
+  padding-bottom:.1rem;
 }
 
+.app-content{
+  background-color:#f5f5f6;
+  /* padding:0 0 0 2rem; */
+}
 .data-display{
-  /* background-color:#E1E2E1; */
-  /* background-color:#f5f5f6; */
-  padding-top:.5rem;
+  position:absolute;
+  padding: 0 0 0 2rem;
+  overflow-y:scroll;
+  height:80vh;
 }
 .error{
   color:#ff4c4a;
