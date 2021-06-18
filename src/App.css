@@ -39,9 +39,10 @@ h1{
 }
 .data-display{
   position:absolute;
-  padding: 0 0 0 2rem;
+  padding: 0 0 2rem 2rem;
   overflow-y:scroll;
   height:80vh;
+  width:96.4%;
 }
 .error{
   color:#ff4c4a;
