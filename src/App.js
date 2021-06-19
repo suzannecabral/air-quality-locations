@@ -1,24 +1,39 @@
 import './App.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+
 import DataDisplay from './components/DataDisplay';
+import UserForm from './components/UserForm';
 
 function App() {
+  // url format: 
+  // query coordinates are gps latitude, longitude
+  // radius is in meters
+  // &coordinates=37.5341,-122.2473&radius=8047
+  const defaultQueryValues={
+    "lat":37.5341,
+    "long":-122.2473,
+    "radius":8047
+  };
+  
+  // queryValues is an object with correctly formatted params ready for URl
+  // queryUrl is used directly
+  const baseUrl='https://docs.openaq.org/v2/locations?entity=community&country=US&has_geo=true';
+  const defaultUrl=baseUrl + '&coordinates=' + defaultQueryValues.lat + ',' + defaultQueryValues.long + '&radius=' + defaultQueryValues.radius;
 
-  let apiUrl = 'https://docs.openaq.org/v2/locations'
-  let urlParams = '?entity=community&country=US&order_by=city';
-
-  let [error, setError] = useState(false);
-  let [errorMsg, setErrorMsg] = useState('');
-  let [communityData, setCommunityData] = useState([]);
+  const [queryValues, setQueryValues] = useState(defaultQueryValues);
+  const [queryUrl, setQueryUrl] = useState(defaultUrl);
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [communityData, setCommunityData] = useState([]);
 
   useEffect(()=>{
-
-    axios.get(apiUrl + urlParams)
+    axios.get(queryUrl)
     .then((res)=>{
       // res.data.results sends an array of community objects
       // individual readings are nested in object.parameters
       setCommunityData([...res.data.results]);
+      console.log('Res object: ', res);
       console.log('App State data:', communityData);
     })
     .catch((err)=>{
@@ -26,7 +41,7 @@ function App() {
       setErrorMsg(err);
       console.error(err);
     });
-  },[])
+  },[queryUrl])
 
   return (
     <div className="app">
@@ -36,8 +51,13 @@ function App() {
             <h1>Air Quality</h1>
           </header>
           <p className="description">Local air quality data powered by OpenAQ API</p>
-          {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
         </div>
+        <UserForm
+          queryValues={queryValues}
+          setQueryValues={setQueryValues}
+          setQueryUrl={setQueryUrl}
+          baseUrl={baseUrl}
+        ></UserForm>
         <DataDisplay
           communityData={communityData}
         ></DataDisplay>

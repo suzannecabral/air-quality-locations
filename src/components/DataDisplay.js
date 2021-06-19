@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 // Needs communityData, error, errorMsg
@@ -8,9 +8,64 @@ const DataDisplay =(props)=> {
 
     const { communityData } = props;
 
+    const [displayData, setDisplayData] = useState([]);
+
+    const goalAQ = 5;
+
+    const filterForDisplay = (arr) => {
+        // create a copy of api data to transform
+        const copiedArr = JSON.parse(JSON.stringify(arr));
+
+        // filter:
+        // must have at least 1 measurement (ceil) > 0.000 using micrograms/m3
+
+        // reduce:
+        // keep data for highest measurement (by parameter.average)
+        /*{
+            communityName: Smallville
+            communityId: 71900
+            maxParam:{
+                average: 2.57801003344482
+                unit: µg/m³
+                displayName: PM10
+                id: 420988
+            },
+            meetsGoalAQ: true
+        }*/
+        const findMaxParam = (arr) => {
+            return arr.reduce((acc,cur)=>{
+                if (cur.average > acc.average){
+                    acc = cur
+                };
+                return acc;
+            })
+        }
+
+        const newArr = copiedArr.map((comm)=>{
+            let maxParam = findMaxParam(comm.parameters);
+
+            return(
+                { 
+                    "communityName": comm.name,
+                    "communityId": comm.id,
+                    /*"maxParam":{
+                        "average": 2.57801003344482,
+                        "unit": "µg/m³",
+                        "type": "PM10",
+                        "id": 420988
+                    }*/
+                    "maxParam": maxParam,
+                    meetsGoalAQ: maxParam.average < goalAQ
+                }
+            )
+        });
+        return newArr;
+    }
+
     useEffect(()=>{
-        console.log("Data display updated");
-        console.log("Data display props: ", props);
+        // transform community data before setting to display
+        setDisplayData(filterForDisplay(communityData));
+        console.log("Display Data: ", displayData);
     },[props]);
 
     return(
@@ -18,15 +73,15 @@ const DataDisplay =(props)=> {
             <div className='data-description'>
             </div>
             <div className="data-list">
+                
                 {
-                    communityData.map((obj, idx)=>{
-                    return (<div key={'obj'+idx} className='community'><p className="community-name">{obj.name}</p>  
-                        {
-                            obj.parameters.map((param,idx)=>{
-                                return(<p key={'param'+idx}  className={param.unit === "µg/m³" && param.average > 0 && param.average < 5 ? 'targetAQ' : ''}> { (Math.ceil(param.average * 1000)/1000).toFixed(3)+ ' ' + param.unit + ' ' + param.parameter}</p>);
-                            })
-                        }
-                    </div>)
+                    displayData.map((obj, idx)=>{
+                    return (
+                    <div key={'comm'+idx} className='community'>
+                        <p className="community-name">{obj.communityName}</p>
+                        <p className={obj.meetsGoalAQ ? 'green' : 'red' }>{obj.maxParam.average + ' ' + obj.maxParam.unit + ' ' + obj.maxParam.displayName}</p>
+                    </div>
+                    )
                     })
                 }
             </div>
