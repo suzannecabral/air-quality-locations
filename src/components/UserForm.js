@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import zipObjs from '../zip-lat-long.json';
 
 const UserForm = (props) => {
-    const { queryValues, setQueryValues } = props;
+    const { queryValues, setQueryValues, baseUrl, setQueryUrl } = props;
 
     const defaultFormValues={
-        "radius":0,
+        "radius":5,
         "zipcode":''
     };
     // url format: 
@@ -19,9 +19,29 @@ const UserForm = (props) => {
         return (Math.ceil(meters));
     }
     
-    // use json to lookup coords for user input zip code
-    
+    // queryValues format:
+    // {
+    //     "lat":37.5341,
+    //     "long":-122.2473,
+    //     "radius":1610
+    // };
 
+    // use json to lookup coords for user input zip code
+    let validatedZip = null;
+    const searchCoords = (userZip) => {
+        let coordsObj = zipObjs.filter(obj=>obj.ZIP===userZip);
+        console.log('Coordinates found: ', coordsObj);
+        // set parameters for url
+        setQueryValues({...queryValues,
+            "lat":Number(coordsObj[0].LAT.toFixed(4)),
+            "long":Number(coordsObj[0].LNG.toFixed(4)),
+            "radius":milesToMeters(formValues.radius)
+        });
+        // set api URL to be searched
+        setQueryUrl(baseUrl + '&coordinates=' + queryValues.lat + ',' + queryValues.long + '&radius=' + queryValues.radius);
+    }
+
+    // form state and validation
     const [ formValues, setFormValues ] = useState(defaultFormValues);
     const [ errorMsg, setErrorMsg ] = useState('');
 
@@ -44,7 +64,9 @@ const UserForm = (props) => {
         // returns true if found
         if(zipList.includes(searchZip)){
             setErrorMsg('');
+            validatedZip = searchZip;
             console.log('Valid zip code: ', searchZip);
+            searchCoords(validatedZip);
             return true;
         }else{
             setErrorMsg('Invalid Zip Code');
@@ -86,7 +108,6 @@ const UserForm = (props) => {
                         // value={formValues.radius}
                         onChange={onChange}
                     >
-                        <option value="1">1 mi</option>
                         <option value="5">5 mi</option>
                         <option value="10">10 mi</option>
                         <option value="15">15 mi</option>

@@ -13,7 +13,7 @@ function App() {
   const defaultQueryValues={
     "lat":37.5341,
     "long":-122.2473,
-    "radius":1610
+    "radius":8047
   };
   
   // queryValues is an object with correctly formatted params ready for URl
@@ -28,7 +28,6 @@ function App() {
   const [communityData, setCommunityData] = useState([]);
 
   useEffect(()=>{
-
     axios.get(queryUrl)
     .then((res)=>{
       // res.data.results sends an array of community objects
@@ -42,7 +41,7 @@ function App() {
       setErrorMsg(err);
       console.error(err);
     });
-  },[])
+  },[queryUrl])
 
   return (
     <div className="app">
@@ -52,11 +51,12 @@ function App() {
             <h1>Air Quality</h1>
           </header>
           <p className="description">Local air quality data powered by OpenAQ API</p>
-          {error ? <p role="alert" className="error">Server Error: {errorMsg} </p> : <p></p>}
         </div>
         <UserForm
           queryValues={queryValues}
           setQueryValues={setQueryValues}
+          setQueryUrl={setQueryUrl}
+          baseUrl={baseUrl}
         ></UserForm>
         <DataDisplay
           communityData={communityData}
