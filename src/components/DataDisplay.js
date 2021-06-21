@@ -55,7 +55,7 @@ const DataDisplay =(props)=> {
                         "id": 420988
                     }*/
                     "maxParam": maxParam,
-                    meetsGoalAQ: maxParam.average < goalAQ
+                    "meetsGoalAQ": maxParam.average < goalAQ
                 }
             )
         });
