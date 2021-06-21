@@ -52,7 +52,7 @@ const UserForm = (props) => {
 
     const validateZip = (userZip) =>{
         let searchZip = 0;
-        if (userZip[0] != '0'){
+        if (userZip[0] !== '0'){
             // If zip starts dosen't start with 0, convert to num
             // zips that start with 0 are formatted as strings in search list
             // the rest are numbers
