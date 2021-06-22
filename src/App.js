@@ -35,9 +35,8 @@ function App() {
     .then((res)=>{
       // res.data.results sends an array of community objects
       // individual readings are nested in object.parameters
-      setCommunityData([...res.data.results]);
+      setCommunityData(res.data.results);
       console.log('Res object: ', res);
-      console.log('App State data:', communityData);
     })
     .catch((err)=>{
       console.error(err);
