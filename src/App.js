@@ -23,22 +23,22 @@ function App() {
 
   const [queryValues, setQueryValues] = useState(defaultQueryValues);
   const [queryUrl, setQueryUrl] = useState(defaultUrl);
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
   const [communityData, setCommunityData] = useState([]);
+
+  // Next build: show server status errors on screen
+  // reflect error structure in displayData
+  // const [error, setError] = useState(false);
+  // const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(()=>{
     axios.get(queryUrl)
     .then((res)=>{
       // res.data.results sends an array of community objects
       // individual readings are nested in object.parameters
-      setCommunityData([...res.data.results]);
+      setCommunityData(res.data.results);
       console.log('Res object: ', res);
-      console.log('App State data:', communityData);
     })
     .catch((err)=>{
-      setError(true);
-      setErrorMsg(err);
       console.error(err);
     });
   },[queryUrl])

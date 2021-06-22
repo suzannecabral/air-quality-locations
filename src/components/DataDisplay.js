@@ -12,61 +12,57 @@ const DataDisplay =(props)=> {
 
     const goalAQ = 5;
 
-    const filterForDisplay = (arr) => {
-        // create a copy of api data to transform
-        const copiedArr = JSON.parse(JSON.stringify(arr));
-
-        // filter:
-        // must have at least 1 measurement (ceil) > 0.000 using micrograms/m3
-
-        // reduce:
-        // keep data for highest measurement (by parameter.average)
-        /*{
-            communityName: Smallville
-            communityId: 71900
-            maxParam:{
-                average: 2.57801003344482
-                unit: µg/m³
-                displayName: PM10
-                id: 420988
-            },
-            meetsGoalAQ: true
-        }*/
-        const findMaxParam = (arr) => {
-            return arr.reduce((acc,cur)=>{
-                if (cur.average > acc.average){
-                    acc = cur
-                };
-                return acc;
-            })
-        }
-
-        const newArr = copiedArr.map((comm)=>{
-            let maxParam = findMaxParam(comm.parameters);
-
-            return(
-                { 
-                    "communityName": comm.name,
-                    "communityId": comm.id,
-                    /*"maxParam":{
-                        "average": 2.57801003344482,
-                        "unit": "µg/m³",
-                        "type": "PM10",
-                        "id": 420988
-                    }*/
-                    "maxParam": maxParam,
-                    meetsGoalAQ: maxParam.average < goalAQ
-                }
-            )
-        });
-        return newArr;
-    }
-
     useEffect(()=>{
         // transform community data before setting to display
+        const filterForDisplay = (arr) => {
+            // create a copy of api data to transform
+            const copiedArr = JSON.parse(JSON.stringify(arr));
+    
+            // reduce:
+            // keep data for highest measurement (by parameter.average)
+
+            /*{
+                communityName: Smallville
+                communityId: 71900
+                maxParam:{
+                    average: 2.57801003344482
+                    unit: µg/m³
+                    displayName: PM10
+                    id: 420988
+                },
+                meetsGoalAQ: true
+            }*/
+            const findMaxParam = (arr) => {
+                return arr.reduce((acc,cur)=>{
+                    if (cur.average > acc.average){
+                        acc = cur
+                    };
+                    return acc;
+                })
+            }
+    
+            const newArr = copiedArr.map((comm)=>{
+                let maxParam = findMaxParam(comm.parameters);
+    
+                return(
+                    { 
+                        "communityName": comm.name,
+                        "communityId": comm.id,
+                        /*"maxParam":{
+                            "average": 2.57801003344482,
+                            "unit": "µg/m³",
+                            "type": "PM10",
+                            "id": 420988
+                        }*/
+                        "maxParam": maxParam,
+                        "meetsGoalAQ": maxParam.average < goalAQ
+                    }
+                )
+            });
+            return newArr;
+        }
         setDisplayData(filterForDisplay(communityData));
-        console.log("Display Data: ", displayData);
-    },[props]);
+    },[communityData]);
 
     return(
         <div className='data-display'>
