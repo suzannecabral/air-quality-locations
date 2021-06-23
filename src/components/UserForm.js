@@ -2,6 +2,8 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import zipObjs from '../zip-lat-long.json';
 
+import milesToMeters from '../utils/milesToMeters';
+
 const UserForm = (props) => {
     const { queryValues, setQueryValues, baseUrl, setQueryUrl } = props;
 
@@ -11,13 +13,6 @@ const UserForm = (props) => {
     };
     // url format: 
     // &coordinates=37.5341,-122.2473&radius=8047
-
-    // query uses meters for radius distance
-    // miles to meters: 1:1609.34
-    const milesToMeters = (miles) => {
-        const meters = miles * 1609.34;
-        return (Math.ceil(meters));
-    }
     
     // queryValues format:
     // {
@@ -28,13 +23,19 @@ const UserForm = (props) => {
 
     // use json to lookup coords for user input zip code
     let validatedZip = null;
+
     const searchCoords = (userZip) => {
         let coordsObj = zipObjs.filter(obj=>obj.ZIP===userZip);
         console.log('Coordinates found: ', coordsObj);
         // set parameters for url
         setQueryValues({...queryValues,
+
+            // set query coords latitude & longitude 
+            // limit to 4 decimal places
             "lat":Number(coordsObj[0].LAT.toFixed(4)),
             "long":Number(coordsObj[0].LNG.toFixed(4)),
+
+            // query uses meters for radius distance
             "radius":milesToMeters(formValues.radius)
         });
         // set api URL to be searched
