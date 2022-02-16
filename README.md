@@ -1,5 +1,7 @@
 # Air Quality Locations
 
+Deployed Link: [Netlify](https://community-air-quality.netlify.app/)
+
 Data visualization of local air quality powered by OpenAQ's API
 
 [OpenAQ Home](https://openaq.org/#/)
