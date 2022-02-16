@@ -17,8 +17,9 @@
 
 header {
   background-color:#b3e5fc;
-  border-top:18px solid #82b3c9;
+  /* border-top:18px solid #82b3c9; */
   padding-bottom:.1rem;
+  margin-bottom: 6rem;
 }
 h1{
   font-weight:normal;
@@ -26,11 +27,11 @@ h1{
 .app{
   color:#2e2e2e;
 }
-.app-top{
+/* .app-top{
   -webkit-box-shadow: 0px 0px 4px 4px #E1E2E1; 
   box-shadow: 0px 0px 4px 4px #ededed;
   height:19vh;
-}
+} */
 .app-top > *{
   padding:0 0 0 2rem;
 }
@@ -38,9 +39,9 @@ h1{
   padding-bottom:.1rem;
 }
 
-.app-content{
+/* .app-content{
   background-color:#f5f5f6;
-}
+} */
 .data-display{
   position:absolute;
   padding: 0 0 2rem 2rem;
