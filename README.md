@@ -1,6 +1,7 @@
 # Air Quality Locations
 
 Deployed Link: [Netlify](https://community-air-quality.netlify.app/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/357f3605-175e-47fa-a6ea-7c955b1fc542/deploy-status)](https://app.netlify.com/sites/community-air-quality/deploys)
 
 Data visualization of local air quality powered by OpenAQ's API
 
