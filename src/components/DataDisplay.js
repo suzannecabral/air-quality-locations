@@ -1,88 +1,34 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React from "react";
+// import { useEffect, useState } from 'react';
+// import { PropTypes } from 'prop-types';
+// import { displayMax } from '../utils/displayMax';
 
+const DataDisplay = ({ displayData }) => {
+	return (
+		<div className="data-display">
+			<div className="data-description"></div>
+			<div className="data-list">
+				{displayData.map((obj, idx) => {
+					return (
+						<div key={"comm" + idx} className="community">
+							<p className="community-name">{obj.communityName}</p>
+							<p className={obj.meetsGoalAQ ? "green" : "red"}>
+								{obj.maxParam.average +
+									" " +
+									obj.maxParam.unit +
+									" " +
+									obj.maxParam.displayName}
+							</p>
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	);
+};
 
-// Needs communityData, error, errorMsg
-// later add loader status and graphic
-const DataDisplay =(props)=> {
-
-    const { communityData } = props;
-
-    const [displayData, setDisplayData] = useState([]);
-
-    const goalAQ = 5;
-
-    useEffect(()=>{
-        // transform community data before setting to display
-        const filterForDisplay = (arr) => {
-            // create a copy of api data to transform
-            const copiedArr = JSON.parse(JSON.stringify(arr));
-    
-            // reduce:
-            // keep data for highest measurement (by parameter.average)
-
-            /*{
-                communityName: Smallville
-                communityId: 71900
-                maxParam:{
-                    average: 2.57801003344482
-                    unit: µg/m³
-                    displayName: PM10
-                    id: 420988
-                },
-                meetsGoalAQ: true
-            }*/
-            const findMaxParam = (arr) => {
-                return arr.reduce((acc,cur)=>{
-                    if (cur.average > acc.average){
-                        acc = cur
-                    };
-                    return acc;
-                })
-            }
-    
-            const newArr = copiedArr.map((comm)=>{
-                let maxParam = findMaxParam(comm.parameters);
-    
-                return(
-                    { 
-                        "communityName": comm.name,
-                        "communityId": comm.id,
-                        /*"maxParam":{
-                            "average": 2.57801003344482,
-                            "unit": "µg/m³",
-                            "type": "PM10",
-                            "id": 420988
-                        }*/
-                        "maxParam": maxParam,
-                        "meetsGoalAQ": maxParam.average < goalAQ
-                    }
-                )
-            });
-            return newArr;
-        }
-        setDisplayData(filterForDisplay(communityData));
-    },[communityData]);
-
-    return(
-        <div className='data-display'>
-            <div className='data-description'>
-            </div>
-            <div className="data-list">
-                
-                {
-                    displayData.map((obj, idx)=>{
-                    return (
-                    <div key={'comm'+idx} className='community'>
-                        <p className="community-name">{obj.communityName}</p>
-                        <p className={obj.meetsGoalAQ ? 'green' : 'red' }>{obj.maxParam.average + ' ' + obj.maxParam.unit + ' ' + obj.maxParam.displayName}</p>
-                    </div>
-                    )
-                    })
-                }
-            </div>
-        </div>
-    );
-}
+// DataDisplay.propTypes = {
+//     communityData: PropTypes.array
+// };
 
 export default DataDisplay;
